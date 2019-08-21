@@ -1,2 +1,16 @@
 # TREC_News Track
 # This is for the Background Linking of News Track in TREC 2019.
+
+wyq
+1…………from_json_to_xml
+     used to transfer json files to xml, preparatory stage
+2…………get_entities
+     used to add entities txt files to xml, preparatory stage
+3…………get_keywords
+4…………get_parawords
+     used to find keywords in every news, specific methods to get keywords were not written by myself instand of borrowing from yake (https://github.com/LIAAD/yake).
+     after get keywords, I divided every news into three parts———— the fist 1/5 paragraphes as the beginning, the middle 3/5 paragraphes as the main story, the latter 1/5 as the ending.
+     so I get three parts of keywords from every news, and then I used them to get answers used Indri.
+5…………indri_words
+     used to form the query_parameters file, and used 0.2 main keywords and 0.8 parawords to form the query of every news.
+     then get every frist 5 answers added to form the final answer.
