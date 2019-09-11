@@ -1,0 +1,69 @@
+import nltk
+import os
+from nltk import treebank
+import pprint
+import numpy
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
+
+def entity_extraction(file_path):
+  with open(file_path, 'r', encoding='utf8') as sampleFile:
+   text=sampleFile.read()
+
+   # 分词
+   tokenized = nltk.word_tokenize(text)
+   # pprint.pprint(tokenized)
+
+   # 词性标注
+   tagged = nltk.pos_tag(tokenized)
+   # pprint.pprint(tagged)
+
+   # 命名实体识别
+   chunked = nltk.ne_chunk(tagged)
+   # pprint.pprint(chunked)
+
+   en = {}
+   dic = {}
+   length = len(tokenized)
+
+   for tree in chunked:
+       # print(tree)
+       # print(type(tree)) 非专有名词为'tuple',是专有名词的为“tree”
+       if hasattr(tree, 'label'):
+           # print(tree.draw())
+           ne = ' '.join(c[0] for c in tree.leaves())
+           en[ne] = [tree.label(), ' '.join(c[1] for c in tree.leaves())]
+           dic[ne] = count = text.count(ne)
+
+   # print(dic)
+
+   # 词典排序
+   dic = sorted(dic.items(), key=lambda dic: dic[1], reverse=True)
+   #print(dic)
+
+  output = "length="+str(length)+' '+str(dic)
+
+  return output
+
+
+if __name__ == "__main__":
+    folder_path = "C:/new2019/"
+    file_list = os.listdir(folder_path)
+    #print(file_list)
+
+    for file_name in file_list:
+        print(file_name)
+        file_path = folder_path + file_name
+        entities = str(entity_extraction(file_path=file_path))
+        #print(entities)
+        entity_txt = open("entity2019.txt", "a+", encoding="utf-8")
+        (file_path,tempfilename) = os.path.split(file_name)
+        (shotname,extension) = os.path.splitext(tempfilename)
+        entity_txt.write("num="+ shotname+" ")
+        entity_txt.write(entities)
+        entity_txt.write("\n")
+        entity_txt.close()
+
+print("完成")
