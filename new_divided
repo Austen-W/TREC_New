@@ -1,0 +1,15 @@
+将每一篇new分别放入一个txt
+import re
+# 读取txt文件
+with open('2019test_full.txt', "r",encoding='utf-8') as f:
+     a = f.read()
+# 分割内容
+b=re.split('<body>|</body>',a)
+print(b)
+n=0
+for i in b:
+    if re.search("<url>|</topics>",i):
+        continue
+    n+=1
+    with open("./new2019/%s.txt"%n,'w',encoding='utf-8') as f:
+        f.write(i)
